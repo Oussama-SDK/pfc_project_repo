@@ -375,13 +375,6 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
     setOpenDropdown(openDropdown === itemId ? null : itemId);
   };
 
-  // Chevron icon for dropdowns
-  const ChevronIcon = () => (
-    <svg className="w-4 h-4 ml-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-    </svg>
-  );
-
   // Star icon for parcours button
   const StarIcon = () => (
     <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
@@ -409,9 +402,8 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
           {/* Desktop links - 9rayti style */}
           <div className="hidden lg:flex items-center gap-0">
             {menuItems.map((item, idx) => (
-              <div key={idx} className="relative" onClick={(e) => e.stopPropagation()}>
+              <div key={idx} className="relative group" onMouseEnter={() => setOpenDropdown(item.label)} onMouseLeave={() => setOpenDropdown(null)}>
                 <button
-                  onClick={(e) => handleDropdownClick(e, item.label)}
                   className={`nav-link-animated px-4 py-2 text-sm font-medium transition-colors duration-200 flex items-center gap-1 rounded-lg
                     ${scrolled 
                       ? openDropdown === item.label ? 'text-purple-700 bg-purple-50' : 'text-gray-700 hover:text-purple-700 hover:bg-purple-50'
@@ -419,7 +411,9 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
                     }`}
                 >
                   {item.label}
-                  <ChevronIcon />
+                  <svg className={`w-4 h-4 ml-1 transition-transform duration-200 ${openDropdown === item.label ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
                 </button>
                 
                 {/* Dropdown menu */}
