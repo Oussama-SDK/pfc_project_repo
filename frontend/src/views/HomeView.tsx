@@ -292,7 +292,6 @@ function SectionHeading({ small, large, accent, center = true }: { small: string
 function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModal }: { language: Lang; setLanguage: (l: Lang) => void; t: Translation; setShowLoginModal: (show: boolean) => void; setShowSignupModal: (show: boolean) => void }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('top');
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileOpenDropdown, setMobileOpenDropdown] = useState<string | null>(null);
 
@@ -310,13 +309,6 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
       return () => document.removeEventListener('click', handleClickOutside);
     }
   }, [openDropdown, mobileOpen]);
-
-  const navLinks = [
-    { href: '#top', label: t.nav.home, id: 'top' },
-    { href: '#news', label: t.nav.news, id: 'news' },
-    { href: '#advantages', label: t.nav.testimonials, id: 'advantages' },
-    { href: '#contact', label: t.nav.contact, id: 'contact' },
-  ];
 
   // 9rayti-style menu items with dropdowns
   const menuItems = [
@@ -525,18 +517,6 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
                   </div>
                 )}
               </div>
-            ))}
-            
-            {/* Original nav links in mobile */}
-            {navLinks.map((link) => (
-              <a
-                key={link.id}
-                href={link.href}
-                onClick={(e) => { e.preventDefault(); scrollTo(link.href, link.id); }}
-                className="block px-4 py-3 rounded-xl text-gray-700 font-medium hover:bg-purple-50 hover:text-purple-700 transition-colors"
-              >
-                {link.label}
-              </a>
             ))}
             
             {/* Discover parcours in mobile */}
