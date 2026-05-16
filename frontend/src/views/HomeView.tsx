@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import Inscription from '../components/auth/Inscription';
-import { useHomeController } from '../controllers/useHomeController';
-import { emptyContactForm } from '../models/contact';
-import type { Translation, Lang } from '../models/types';
+import { useHomeController } from '../hooks/useHomeController';
+import { emptyContactForm } from '../types/contact';
+import type { Translation, Lang } from '../types/types';
 import { submitContactMessage } from '../services/contactApi';
 
 // ─── Translations ────────────────────────────────────────────────────────────

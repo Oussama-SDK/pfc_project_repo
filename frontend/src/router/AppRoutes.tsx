@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import { useLanguageController } from '../controllers/useLanguageController';
+import { useLanguageController } from '../hooks/useLanguageController';
 import HomeView from '../views/HomeView';
 import NewsView from '../views/NewsView';
 

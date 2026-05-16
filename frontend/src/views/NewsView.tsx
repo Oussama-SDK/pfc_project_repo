@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { Lang } from '../models/types';
+import type { Lang } from '../types/types';
 
 const newsData = {
   fr: [
