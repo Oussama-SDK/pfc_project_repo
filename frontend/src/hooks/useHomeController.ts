@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import type { Lang, Translation } from '../models/types';
+import type { Lang, Translation } from '../types/types';
 
 type UseHomeControllerArgs = {
   language: Lang;
