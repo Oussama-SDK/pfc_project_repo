@@ -408,8 +408,12 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
           <div className="hidden lg:flex items-center gap-1">
             {menuItems.map((item, idx) => (
               <div key={idx} className="relative group" onMouseEnter={() => setOpenDropdown(item.label)} onMouseLeave={() => setOpenDropdown(null)}>
-                <button
-                  onClick={(e) => handleDropdownClick(e, item.label)}
+                <a
+                  href={item.href}
+                  onClick={(e) => { 
+                    if (item.href === '#') e.preventDefault();
+                    handleDropdownClick(e, item.label);
+                  }}
                   className={`nav-link-animated px-3 py-2 text-sm font-medium transition-colors duration-200 flex items-center gap-1 rounded-lg
                     ${scrolled 
                       ? openDropdown === item.label ? 'text-purple-700 bg-purple-50' : 'text-gray-700 hover:text-purple-700 hover:bg-purple-50'
@@ -420,7 +424,7 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
                   <svg className={`w-4 h-4 ml-1 transition-transform duration-200 ${openDropdown === item.label ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
-                </button>
+                </a>
                 
                 {/* Dropdown menu */}
                 {openDropdown === item.label && (
@@ -455,36 +459,40 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
             
             <div className="w-px h-5 bg-gray-200 hidden xl:block"></div>
             
-            <button
-              onClick={() => setLanguage(language === 'fr' ? 'ar' : 'fr')}
+            <a
+              href="#"
+              onClick={(e) => { e.preventDefault(); setLanguage(language === 'fr' ? 'ar' : 'fr'); }}
               className={`px-2.5 py-1 rounded-full text-xs font-bold border transition-all duration-200 ${
                 scrolled ? 'border-purple-300 text-purple-700 hover:bg-purple-50' : 'border-purple-300 text-purple-700 hover:bg-purple-50'
               }`}
             >
               {language === 'fr' ? 'العربية' : 'Français'}
-            </button>
-            <button
-              onClick={() => setShowLoginModal(true)}
+            </a>
+            <a
+              href="#"
+              onClick={(e) => { e.preventDefault(); setShowLoginModal(true); }}
               className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${scrolled ? 'text-purple-700 hover:bg-purple-50' : 'text-purple-700 hover:bg-purple-50'}`}
             >
               {t.nav.login}
-            </button>
-            <button
-              onClick={() => setShowSignupModal(true)}
+            </a>
+            <a
+              href="#"
+              onClick={(e) => { e.preventDefault(); setShowSignupModal(true); }}
               className="btn-gradient text-white px-4 py-1.5 rounded-full text-sm font-semibold shadow-lg hover:shadow-xl transition-shadow"
             >
               {t.nav.signup}
-            </button>
+            </a>
           </div>
 
           {/* Mobile: lang + burger */}
           <div className="lg:hidden flex items-center gap-2">
-            <button
-              onClick={() => setLanguage(language === 'fr' ? 'ar' : 'fr')}
+            <a
+              href="#"
+              onClick={(e) => { e.preventDefault(); setLanguage(language === 'fr' ? 'ar' : 'fr'); }}
               className={`px-2 py-1 rounded-full text-xs font-bold border ${scrolled ? 'border-purple-300 text-purple-700' : 'border-purple-300 text-purple-700'}`}
             >
               {language === 'fr' ? 'ع' : 'FR'}
-            </button>
+            </a>
             <button onClick={(e) => { e.stopPropagation(); setMobileOpen(!mobileOpen); }} className={`p-2 rounded-lg ${scrolled ? 'text-gray-700' : 'text-gray-700'}`}>
               {mobileOpen ? <CloseIcon /> : <MenuIcon />}
             </button>
@@ -500,7 +508,16 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
             {menuItems.map((item, idx) => (
               <div key={idx} className="border-b border-gray-100 pb-2">
                 <div className="flex items-center justify-between py-2">
-                  <span className="font-medium text-gray-900">{item.label}</span>
+                  <a
+                    href={item.href}
+                    onClick={(e) => { 
+                      if (item.href === '#') e.preventDefault();
+                      handleMobileDropdownToggle(item.label);
+                    }}
+                    className="font-medium text-gray-900 hover:text-purple-700 transition-colors"
+                  >
+                    {item.label}
+                  </a>
                   <button 
                     onClick={(e) => { e.stopPropagation(); handleMobileDropdownToggle(item.label); }}
                     className="p-1 text-gray-500"
@@ -550,12 +567,12 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
             </a>
             
             <div className="pt-3 flex gap-2">
-              <button onClick={() => setShowLoginModal(true)} className="flex-1 text-center py-2.5 rounded-full border border-purple-300 text-purple-700 text-sm font-medium hover:bg-purple-50 transition-colors">
+              <a href="#" onClick={(e) => { e.preventDefault(); setShowLoginModal(true); }} className="flex-1 text-center py-2.5 rounded-full border border-purple-300 text-purple-700 text-sm font-medium hover:bg-purple-50 transition-colors">
                 {t.nav.login}
-              </button>
-              <button onClick={() => setShowSignupModal(true)} className="flex-1 text-center py-2.5 rounded-full btn-gradient text-white text-sm font-semibold shadow-md">
+              </a>
+              <a href="#" onClick={(e) => { e.preventDefault(); setShowSignupModal(true); }} className="flex-1 text-center py-2.5 rounded-full btn-gradient text-white text-sm font-semibold shadow-md">
                 {t.nav.signup}
-              </button>
+              </a>
             </div>
           </div>
         </div>
