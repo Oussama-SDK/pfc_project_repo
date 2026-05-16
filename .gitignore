@@ -1,56 +1,31 @@
-```gitignore
+```
 # Dependencies
 node_modules/
+frontend/node_modules/
 
-# Build outputs
-dist/
-build/
-target/
+# Build artifacts
+frontend/dist/
 
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-env/
-venv/
-.venv/
-.ENV
-pip-log.txt
-pip-delete-this-directory.txt
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.log
-.git/modules/
-*.sublime-workspace
+# Vite cache
+frontend/node_modules/.vite/
 
-# Environment variables
+# Temporary files
+*.tmp
+*.swp
+
+# Environment files
 .env
 .env.local
-.env.*
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*.tmp
-
-# OS
-.DS_Store
-Thumbs.db
+*.env.*
 
 # Logs
 *.log
 
-# Coverage
-coverage/
-htmlcov/
-.coverage
+# Editors
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
 ```
