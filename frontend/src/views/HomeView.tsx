@@ -387,24 +387,24 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
       dir={t.direction}
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-white'}`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <a href="#top" onClick={(e) => { e.preventDefault(); scrollTo('#top', 'top'); }} className="flex items-center gap-2 flex-shrink-0">
-            <div className="w-9 h-9 rounded-xl btn-gradient flex items-center justify-center shadow-lg">
-              <span className="text-white font-black text-lg">M</span>
+            <div className="w-8 h-8 rounded-lg btn-gradient flex items-center justify-center shadow-lg">
+              <span className="text-white font-black text-base">M</span>
             </div>
-            <span className={`font-black text-xl ${scrolled ? 'text-gray-900' : 'text-gray-900'}`}>
+            <span className={`font-black text-lg ${scrolled ? 'text-gray-900' : 'text-gray-900'}`}>
               My<span className="gradient-text">Tawjeh</span>
             </span>
           </a>
 
           {/* Desktop links - 9rayti style */}
-          <div className="hidden lg:flex items-center gap-0">
+          <div className="hidden lg:flex items-center gap-1">
             {menuItems.map((item, idx) => (
               <div key={idx} className="relative group" onMouseEnter={() => setOpenDropdown(item.label)} onMouseLeave={() => setOpenDropdown(null)}>
                 <button
-                  className={`nav-link-animated px-4 py-2 text-sm font-medium transition-colors duration-200 flex items-center gap-1 rounded-lg
+                  className={`nav-link-animated px-3 py-2 text-sm font-medium transition-colors duration-200 flex items-center gap-1 rounded-lg
                     ${scrolled 
                       ? openDropdown === item.label ? 'text-purple-700 bg-purple-50' : 'text-gray-700 hover:text-purple-700 hover:bg-purple-50'
                       : openDropdown === item.label ? 'text-purple-700 bg-purple-50' : 'text-gray-700 hover:text-purple-700 hover:bg-purple-50'
@@ -436,22 +436,22 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
           </div>
 
           {/* Right: Discover Parcours + Language + Auth */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-2">
             {/* 9rayti-style "Découvrir mon parcours" button */}
             <a
               href="#"
-              className="hidden xl:flex items-center gap-2 px-4 py-2 rounded-full bg-yellow-100 text-yellow-800 text-sm font-semibold hover:bg-yellow-200 transition-colors"
+              className="hidden xl:flex items-center gap-1 px-3 py-1.5 rounded-full bg-yellow-100 text-yellow-800 text-xs font-semibold hover:bg-yellow-200 transition-colors"
             >
               <StarIcon />
               <span>{t.nav.discoverParcours}</span>
               <StarIcon />
             </a>
             
-            <div className="w-px h-6 bg-gray-200 hidden xl:block"></div>
+            <div className="w-px h-5 bg-gray-200 hidden xl:block"></div>
             
             <button
               onClick={() => setLanguage(language === 'fr' ? 'ar' : 'fr')}
-              className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-all duration-200 ${
+              className={`px-2.5 py-1 rounded-full text-xs font-bold border transition-all duration-200 ${
                 scrolled ? 'border-purple-300 text-purple-700 hover:bg-purple-50' : 'border-purple-300 text-purple-700 hover:bg-purple-50'
               }`}
             >
@@ -459,13 +459,13 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
             </button>
             <button
               onClick={() => setShowLoginModal(true)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${scrolled ? 'text-purple-700 hover:bg-purple-50' : 'text-purple-700 hover:bg-purple-50'}`}
+              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${scrolled ? 'text-purple-700 hover:bg-purple-50' : 'text-purple-700 hover:bg-purple-50'}`}
             >
               {t.nav.login}
             </button>
             <button
               onClick={() => setShowSignupModal(true)}
-              className="btn-gradient text-white px-5 py-2 rounded-full text-sm font-semibold shadow-lg hover:shadow-xl transition-shadow"
+              className="btn-gradient text-white px-4 py-1.5 rounded-full text-sm font-semibold shadow-lg hover:shadow-xl transition-shadow"
             >
               {t.nav.signup}
             </button>
