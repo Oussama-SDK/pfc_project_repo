@@ -16,6 +16,13 @@ const translations: Record<Lang, Translation> = {
       contact: 'Contact',
       login: 'Connexion',
       signup: 'Inscription',
+      // 9rayti-style menu items
+      menuActualites: 'Actualités',
+      menuEnseignement: 'Enseignement Supérieur',
+      menuFormations: 'Formations Post-Bac',
+      menuOrientation: 'Orientation',
+      menuCours: 'Cours et exercices',
+      discoverParcours: 'Découvrir mon parcours',
     },
     hero: {
       badge: 'Bienvenue sur MyTawjeh',
@@ -139,6 +146,13 @@ const translations: Record<Lang, Translation> = {
       contact: 'تواصل معنا',
       login: 'تسجيل الدخول',
       signup: 'إنشاء حساب',
+      // 9rayti-style menu items (Arabic)
+      menuActualites: 'الأخبار',
+      menuEnseignement: 'التعليم العالي',
+      menuFormations: 'تكوينات ما بعد البكالوريا',
+      menuOrientation: 'التوجيه',
+      menuCours: 'الدروس والتمارين',
+      discoverParcours: 'اكتشف مسارك',
     },
     hero: {
       badge: 'مرحبًا بكم على MyTawjeh',
@@ -279,12 +293,22 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('top');
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = () => setOpenDropdown(null);
+    if (openDropdown) {
+      document.addEventListener('click', handleClickOutside);
+      return () => document.removeEventListener('click', handleClickOutside);
+    }
+  }, [openDropdown]);
 
   const navLinks = [
     { href: '#top', label: t.nav.home, id: 'top' },
@@ -293,17 +317,82 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
     { href: '#contact', label: t.nav.contact, id: 'contact' },
   ];
 
+  // 9rayti-style menu items with dropdowns
+  const menuItems = [
+    {
+      label: t.nav.menuActualites,
+      href: '#news',
+      dropdown: [
+        { label: language === 'fr' ? 'Calendrier des concours' : 'تقويم المباريات', href: '#' },
+        { label: language === 'fr' ? 'Annonces bourses' : 'إعلانات المنح', href: '#' },
+        { label: language === 'fr' ? "Actualité de l'éducation" : 'أخبار التعليم', href: '#news' },
+        { label: language === 'fr' ? 'Événements' : 'الأحداث', href: '#' },
+        { label: language === 'fr' ? 'Agenda Étudiants' : 'جدول الطلاب', href: '#' },
+      ],
+    },
+    {
+      label: t.nav.menuEnseignement,
+      href: '#',
+      dropdown: [
+        { label: language === 'fr' ? 'Études au Maroc' : 'الدراسة في المغرب', href: '#' },
+        { label: language === 'fr' ? 'Concours' : 'المباريات', href: '#' },
+        { label: language === 'fr' ? "Études à l'étranger" : 'الدراسة بالخارج', href: '#' },
+        { label: language === 'fr' ? 'Vie étudiante' : 'الحياة الطلابية', href: '#' },
+      ],
+    },
+    {
+      label: t.nav.menuFormations,
+      href: '#',
+      dropdown: [
+        { label: language === 'fr' ? 'Secteurs de Formation' : 'قطاعات التكوين', href: '#' },
+        { label: language === 'fr' ? 'Types de Formation' : 'أنواع التكوين', href: '#' },
+        { label: language === 'fr' ? 'Écoles' : 'المدارس', href: '#' },
+        { label: language === 'fr' ? 'Villes' : 'المدن', href: '#' },
+      ],
+    },
+    {
+      label: t.nav.menuOrientation,
+      href: '#',
+      dropdown: [
+        { label: language === 'fr' ? 'Lycée Maroc' : 'الثانوي المغربي', href: '#' },
+        { label: language === 'fr' ? 'Collège Maroc' : 'الإعدادي المغربي', href: '#' },
+        { label: language === 'fr' ? 'Post-Bac' : 'ما بعد البكالوريا', href: '#' },
+        { label: language === 'fr' ? 'Interviews/Vidéos' : 'مقابلات/فيديوهات', href: '#' },
+      ],
+    },
+  ];
+
   const scrollTo = (_href: string, id: string) => {
     setMobileOpen(false);
+    setOpenDropdown(null);
     setActiveSection(id);
     if (id === 'top') { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
+  const handleDropdownClick = (e: React.MouseEvent, itemId: string) => {
+    e.stopPropagation();
+    setOpenDropdown(openDropdown === itemId ? null : itemId);
+  };
+
+  // Chevron icon for dropdowns
+  const ChevronIcon = () => (
+    <svg className="w-4 h-4 ml-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+    </svg>
+  );
+
+  // Star icon for parcours button
+  const StarIcon = () => (
+    <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+    </svg>
+  );
+
   return (
     <nav
       dir={t.direction}
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent'}`}
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-white'}`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
@@ -312,62 +401,91 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
             <div className="w-9 h-9 rounded-xl btn-gradient flex items-center justify-center shadow-lg">
               <span className="text-white font-black text-lg">M</span>
             </div>
-            <span className={`font-black text-xl ${scrolled ? 'text-gray-900' : 'text-white'}`}>
+            <span className={`font-black text-xl ${scrolled ? 'text-gray-900' : 'text-gray-900'}`}>
               My<span className="gradient-text">Tawjeh</span>
             </span>
           </a>
 
-          {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <a
-                key={link.id}
-                href={link.href}
-                onClick={(e) => { e.preventDefault(); scrollTo(link.href, link.id); }}
-                className={`nav-link-animated px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
-                  scrolled
-                    ? activeSection === link.id ? 'text-purple-700' : 'text-gray-700 hover:text-purple-700'
-                    : activeSection === link.id ? 'text-purple-300' : 'text-white/90 hover:text-white'
-                } ${activeSection === link.id ? 'active' : ''}`}
-              >
-                {link.label}
-              </a>
+          {/* Desktop links - 9rayti style */}
+          <div className="hidden lg:flex items-center gap-0">
+            {menuItems.map((item, idx) => (
+              <div key={idx} className="relative" onClick={(e) => e.stopPropagation()}>
+                <button
+                  onClick={(e) => handleDropdownClick(e, item.label)}
+                  className={`nav-link-animated px-4 py-2 text-sm font-medium transition-colors duration-200 flex items-center gap-1 rounded-lg
+                    ${scrolled 
+                      ? openDropdown === item.label ? 'text-purple-700 bg-purple-50' : 'text-gray-700 hover:text-purple-700 hover:bg-purple-50'
+                      : openDropdown === item.label ? 'text-purple-700 bg-purple-50' : 'text-gray-700 hover:text-purple-700 hover:bg-purple-50'
+                    }`}
+                >
+                  {item.label}
+                  <ChevronIcon />
+                </button>
+                
+                {/* Dropdown menu */}
+                {openDropdown === item.label && (
+                  <div className="absolute top-full left-0 mt-1 w-64 bg-white rounded-xl shadow-xl border border-gray-100 py-2 animate-fade-in-down">
+                    {item.dropdown.map((subItem, subIdx) => (
+                      <a
+                        key={subIdx}
+                        href={subItem.href}
+                        onClick={(e) => { e.stopPropagation(); setOpenDropdown(null); }}
+                        className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-700 transition-colors"
+                      >
+                        {subItem.label}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
           </div>
 
-          {/* Right: Language + Auth */}
+          {/* Right: Discover Parcours + Language + Auth */}
           <div className="hidden md:flex items-center gap-3">
+            {/* 9rayti-style "Découvrir mon parcours" button */}
+            <a
+              href="#"
+              className="hidden xl:flex items-center gap-2 px-4 py-2 rounded-full bg-yellow-100 text-yellow-800 text-sm font-semibold hover:bg-yellow-200 transition-colors"
+            >
+              <StarIcon />
+              <span>{t.nav.discoverParcours}</span>
+              <StarIcon />
+            </a>
+            
+            <div className="w-px h-6 bg-gray-200 hidden xl:block"></div>
+            
             <button
               onClick={() => setLanguage(language === 'fr' ? 'ar' : 'fr')}
               className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-all duration-200 ${
-                scrolled ? 'border-purple-300 text-purple-700 hover:bg-purple-50' : 'border-white/50 text-white hover:bg-white/10'
+                scrolled ? 'border-purple-300 text-purple-700 hover:bg-purple-50' : 'border-purple-300 text-purple-700 hover:bg-purple-50'
               }`}
             >
               {language === 'fr' ? 'العربية' : 'Français'}
             </button>
             <button
               onClick={() => setShowLoginModal(true)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${scrolled ? 'text-purple-700 hover:bg-purple-50' : 'text-white/90 hover:bg-white/10'}`}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${scrolled ? 'text-purple-700 hover:bg-purple-50' : 'text-purple-700 hover:bg-purple-50'}`}
             >
               {t.nav.login}
             </button>
             <button
               onClick={() => setShowSignupModal(true)}
-              className="btn-gradient text-white px-5 py-2 rounded-full text-sm font-semibold shadow-lg"
+              className="btn-gradient text-white px-5 py-2 rounded-full text-sm font-semibold shadow-lg hover:shadow-xl transition-shadow"
             >
               {t.nav.signup}
             </button>
           </div>
 
           {/* Mobile: lang + burger */}
-          <div className="md:hidden flex items-center gap-2">
+          <div className="lg:hidden flex items-center gap-2">
             <button
               onClick={() => setLanguage(language === 'fr' ? 'ar' : 'fr')}
-              className={`px-2 py-1 rounded-full text-xs font-bold border ${scrolled ? 'border-purple-300 text-purple-700' : 'border-white/50 text-white'}`}
+              className={`px-2 py-1 rounded-full text-xs font-bold border ${scrolled ? 'border-purple-300 text-purple-700' : 'border-purple-300 text-purple-700'}`}
             >
               {language === 'fr' ? 'ع' : 'FR'}
             </button>
-            <button onClick={() => setMobileOpen(!mobileOpen)} className={`p-2 rounded-lg ${scrolled ? 'text-gray-700' : 'text-white'}`}>
+            <button onClick={() => setMobileOpen(!mobileOpen)} className={`p-2 rounded-lg ${scrolled ? 'text-gray-700' : 'text-gray-700'}`}>
               {mobileOpen ? <CloseIcon /> : <MenuIcon />}
             </button>
           </div>
@@ -376,8 +494,40 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden mobile-menu-enter bg-white shadow-xl border-t border-gray-100">
-          <div className="px-4 py-4 space-y-1">
+        <div className="lg:hidden mobile-menu-enter bg-white shadow-xl border-t border-gray-100">
+          <div className="px-4 py-4 space-y-1 max-h-[70vh] overflow-y-auto">
+            {/* 9rayti-style mobile dropdowns */}
+            {menuItems.map((item, idx) => (
+              <div key={idx} className="border-b border-gray-100 pb-2">
+                <div className="flex items-center justify-between py-2">
+                  <span className="font-medium text-gray-900">{item.label}</span>
+                  <button 
+                    onClick={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
+                    className="p-1 text-gray-500"
+                  >
+                    <svg className={`w-5 h-5 transition-transform ${openDropdown === item.label ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                </div>
+                {openDropdown === item.label && (
+                  <div className="pl-4 space-y-1 mt-1">
+                    {item.dropdown.map((subItem, subIdx) => (
+                      <a
+                        key={subIdx}
+                        href={subItem.href}
+                        onClick={() => { setMobileOpen(false); setOpenDropdown(null); }}
+                        className="block py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50 rounded-lg px-2 transition-colors"
+                      >
+                        {subItem.label}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+            
+            {/* Original nav links in mobile */}
             {navLinks.map((link) => (
               <a
                 key={link.id}
@@ -388,11 +538,22 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
                 {link.label}
               </a>
             ))}
+            
+            {/* Discover parcours in mobile */}
+            <a
+              href="#"
+              className="flex items-center justify-center gap-2 mx-4 my-3 px-4 py-3 rounded-xl bg-yellow-100 text-yellow-800 font-semibold"
+            >
+              <StarIcon />
+              <span>{t.nav.discoverParcours}</span>
+              <StarIcon />
+            </a>
+            
             <div className="pt-3 flex gap-2">
-              <button onClick={() => setShowLoginModal(true)} className="flex-1 text-center py-2 rounded-full border border-purple-300 text-purple-700 text-sm font-medium">
+              <button onClick={() => setShowLoginModal(true)} className="flex-1 text-center py-2.5 rounded-full border border-purple-300 text-purple-700 text-sm font-medium hover:bg-purple-50 transition-colors">
                 {t.nav.login}
               </button>
-              <button onClick={() => setShowSignupModal(true)} className="flex-1 text-center py-2 rounded-full btn-gradient text-white text-sm font-semibold">
+              <button onClick={() => setShowSignupModal(true)} className="flex-1 text-center py-2.5 rounded-full btn-gradient text-white text-sm font-semibold shadow-md">
                 {t.nav.signup}
               </button>
             </div>
