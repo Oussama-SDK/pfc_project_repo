@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { Lang } from './types';
+import type { Lang } from '../models/types';
 
 const newsData = {
   fr: [
@@ -21,7 +21,7 @@ const newsData = {
   ]
 };
 
-export default function NewsPage({ language, setLanguage }: { language: Lang; setLanguage: (l: Lang) => void }) {
+export default function NewsView({ language, setLanguage }: { language: Lang; setLanguage: (l: Lang) => void }) {
   const navigate = useNavigate();
   const [selectedNews, setSelectedNews] = useState<number | null>(null);
   const news = newsData[language];

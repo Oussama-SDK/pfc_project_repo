@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
-import Inscription from './Inscription';
-import type { Translation, Lang } from './types';
+import Inscription from '../components/auth/Inscription';
+import { useHomeController } from '../controllers/useHomeController';
+import { emptyContactForm } from '../models/contact';
+import type { Translation, Lang } from '../models/types';
+import { submitContactMessage } from '../services/contactApi';
 
 // ─── Translations ────────────────────────────────────────────────────────────
 const translations: Record<Lang, Translation> = {
@@ -663,20 +666,16 @@ function TestimonialsSection({ t }: { t: Translation }) {
 // ─── Contact Section ──────────────────────────────────────────────────────────
 function ContactSection({ t }: { t: Translation }) {
   const [sent, setSent] = useState(false);
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [formData, setFormData] = useState(emptyContactForm);
   const isRtl = t.direction === 'rtl';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await fetch('http://localhost:5000/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
+      await submitContactMessage(formData);
     } catch (_) { /* fail silently */ }
     setSent(true);
-    setFormData({ name: '', email: '', message: '' });
+    setFormData(emptyContactForm);
     setTimeout(() => setSent(false), 4000);
   };
 
@@ -953,16 +952,19 @@ function LangFAB({ language, setLanguage }: { language: Lang; setLanguage: (l: L
 }
 
 // ─── App Root ─────────────────────────────────────────────────────────────────
-export default function App() {
-  const [language, setLanguage] = useState<Lang>('fr');
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [showSignupModal, setShowSignupModal] = useState(false);
-  const t = translations[language];
+type HomeViewProps = {
+  language: Lang;
+  setLanguage: (language: Lang) => void;
+};
 
-  useEffect(() => {
-    document.documentElement.dir = t.direction;
-    document.documentElement.lang = language;
-  }, [language, t.direction]);
+export default function HomeView({ language, setLanguage }: HomeViewProps) {
+  const {
+    showLoginModal,
+    setShowLoginModal,
+    showSignupModal,
+    setShowSignupModal,
+    t,
+  } = useHomeController({ language, translations });
 
   return (
     <div dir={t.direction} lang={language}>

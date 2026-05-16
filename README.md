@@ -1,101 +1,83 @@
-<<<<<<< HEAD
-# MyTawjeh – AI Academic Orientation Platform
+# MyTawjeh
 
-A MERN stack web app for intelligent academic orientation for Moroccan students.
+AI academic orientation platform for Moroccan students, built with a React/Vite frontend and an Express/MongoDB backend.
 
-## Project Structure
+## Architecture
 
+The project is now organized around an MVC-ready structure.
+
+```text
+My-Tawjihe/
+  backend/
+    src/
+      app.js                  # Express app composition
+      index.js                # Server startup
+      config/                 # Environment and database setup
+      controllers/            # Request handlers
+      middleware/             # Error and 404 middleware
+      models/                 # Mongoose models
+      routes/                 # API route definitions
+      utils/                  # Shared backend helpers
+  frontend/
+    src/
+      components/             # Reusable UI components
+      controllers/            # React hooks that coordinate view state
+      models/                 # Frontend types and view models
+      routes/                 # Client-side routing
+      services/               # API clients
+      utils/                  # Shared frontend utilities
+      views/                  # Route-level screens
 ```
-mytawjihi_project/
-├── frontend/   # React + Vite + Tailwind
-└── backend/    # Express + MongoDB (Mongoose)
-```
 
-## Prerequisites
+In this setup:
 
-- [Node.js](https://nodejs.org/) v18+
-- [MongoDB](https://www.mongodb.com/try/download/community) running locally **or** a [MongoDB Atlas](https://www.mongodb.com/atlas) connection string
+- Models hold data schemas and typed data shapes.
+- Views are route-level UI screens.
+- Controllers coordinate request handling on the backend and state flow on the frontend.
+- Services isolate browser-to-API calls from UI components.
 
----
-
-## 1. Backend Setup
+## Backend Setup
 
 ```bash
 cd backend
 npm install
-```
-
-Copy the example env file and fill in your values:
-
-```bash
 copy .env.example .env
-```
-
-`.env` variables:
-
-| Variable    | Default                                  | Description                  |
-|-------------|------------------------------------------|------------------------------|
-| `PORT`      | `5000`                                   | Port the server listens on   |
-| `MONGO_URI` | `mongodb://localhost:27017/mytawjeh`     | MongoDB connection string    |
-| `CLIENT_URL`| `http://localhost:5173`                  | Frontend origin (for CORS)   |
-
-Start the backend:
-
-```bash
-# Development (auto-reload)
 npm run dev
-
-# Production
-npm start
 ```
 
-The API will be available at `http://localhost:5000`.
+Backend environment variables:
 
-### API Endpoints
+| Variable | Default | Description |
+| --- | --- | --- |
+| `PORT` | `5000` | API port |
+| `MONGO_URI` | `mongodb://localhost:27017/mytawjeh` | MongoDB connection string |
+| `CLIENT_URL` | `*` | Allowed CORS origin |
 
-| Method | Endpoint        | Description                  |
-|--------|-----------------|------------------------------|
-| GET    | `/api/health`   | Health check                 |
-| POST   | `/api/contact`  | Submit a contact message     |
-| GET    | `/api/contact`  | List all contact messages    |
+API endpoints:
 
-**POST `/api/contact` body:**
-```json
-{ "name": "string", "email": "string", "message": "string" }
-```
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `GET` | `/api/health` | Health check |
+| `POST` | `/api/contact` | Submit a contact message |
+| `GET` | `/api/contact` | List contact messages |
 
----
-
-## 2. Frontend Setup
+## Frontend Setup
 
 ```bash
 cd frontend
 npm install
+copy .env.example .env
 npm run dev
 ```
 
-The app will be available at `http://localhost:5173`.
+Frontend environment variables:
 
-To build for production:
+| Variable | Default | Description |
+| --- | --- | --- |
+| `VITE_API_URL` | `http://localhost:5000` | Backend API base URL |
+
+Production build:
 
 ```bash
 npm run build
 ```
-
----
-
-## Running Both Together
-
-Open two terminals:
-
-```bash
-# Terminal 1 – Backend
-cd backend && npm run dev
-
-# Terminal 2 – Frontend
-cd frontend && npm run dev
-```
-=======
-# mytawjeh
-orientation par ai
->>>>>>> 92eec167cd695cb5fe50615735ce4c1406af4eec
