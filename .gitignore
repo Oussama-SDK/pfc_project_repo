@@ -1,3 +1,72 @@
-```ts
+```gitignore
+# Dependencies
+node_modules/
 
+# Build outputs
+dist/
+build/
+*.js.map
+*.ts.map
+
+# Environment variables
+.env
+.env.local
+*.env.*
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tmp
+
+# Logs
+*.log
+
+# Coverage reports
+coverage/
+htmlcov/
+.coverage
+
+# Python specific
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.pytest_cache/
+.mypy_cache/
+
+# Node.js specific
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+```
+
+Wait, I need to reconsider. The only changes are to TypeScript files (.tsx), so let me check if there are any build artifacts or dependency-related files in the changes. The provided change list shows only source files being modified, not any build artifacts or dependency files. Since only source code files were modified, no additional ignores are needed.
+
+```gitignore
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Environment variables
+.env
+.env.local
+*.env.*
+
+# IDE and editor files
+.vscode/
+.idea/
+
+# Logs
+*.log
 ```

@@ -43,12 +43,13 @@ export default function NewsView({ language, setLanguage }: { language: Lang; se
                 My<span className="text-purple-200">Tawjeh</span> {isRtl ? 'الأخبار' : 'Actualités'}
               </h1>
             </div>
-            <button
-              onClick={() => setLanguage(language === 'fr' ? 'ar' : 'fr')}
+            <a
+              href="#"
+              onClick={(e) => { e.preventDefault(); setLanguage(language === 'fr' ? 'ar' : 'fr'); }}
               className="px-4 py-2 rounded-full bg-white/20 text-sm font-medium hover:bg-white/30 transition-colors"
             >
               {language === 'fr' ? 'العربية' : 'Français'}
-            </button>
+            </a>
           </div>
         </div>
       </header>
@@ -78,12 +79,13 @@ export default function NewsView({ language, setLanguage }: { language: Lang; se
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2">{item.title}</h3>
                 <p className="text-gray-600 mb-4 line-clamp-3">{item.excerpt}</p>
-                <button
-                  onClick={() => setSelectedNews(item.id)}
+                <a
+                  href="#"
+                  onClick={(e) => { e.preventDefault(); setSelectedNews(item.id); }}
                   className="text-purple-600 font-semibold text-sm hover:text-purple-800 transition-colors flex items-center gap-1"
                 >
                   {isRtl ? 'اقرأ المزيد →' : 'Lire la suite →'}
-                </button>
+                </a>
               </div>
             </div>
           ))}
@@ -91,12 +93,13 @@ export default function NewsView({ language, setLanguage }: { language: Lang; se
 
         {/* Back to home */}
         <div className="text-center">
-          <button
-            onClick={() => navigate('/')}
+          <a
+            href="/"
+            onClick={(e) => { e.preventDefault(); navigate('/'); }}
             className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-full font-semibold hover:shadow-lg transition-all duration-300"
           >
             {isRtl ? '← العودة إلى الصفحة الرئيسية' : '← Retour à la page d\'accueil'}
-          </button>
+          </a>
         </div>
       </main>
 
@@ -108,12 +111,13 @@ export default function NewsView({ language, setLanguage }: { language: Lang; se
               <h2 className="text-2xl font-bold text-gray-900">
                 {isRtl ? 'تفاصيل الخبر' : 'Détails de l\'actualité'}
               </h2>
-              <button
-                onClick={() => setSelectedNews(null)}
+              <a
+                href="#"
+                onClick={(e) => { e.preventDefault(); setSelectedNews(null); }}
                 className="text-gray-500 hover:text-gray-700 text-2xl"
               >
                 ×
-              </button>
+              </a>
             </div>
             <div className="p-6">
               {(() => {
@@ -135,12 +139,13 @@ export default function NewsView({ language, setLanguage }: { language: Lang; se
               })()}
             </div>
             <div className="border-t border-gray-200 p-6">
-              <button
-                onClick={() => setSelectedNews(null)}
-                className="w-full py-3 bg-gray-100 text-gray-800 rounded-xl font-semibold hover:bg-gray-200 transition-colors"
+              <a
+                href="#"
+                onClick={(e) => { e.preventDefault(); setSelectedNews(null); }}
+                className="w-full py-3 bg-gray-100 text-gray-800 rounded-xl font-semibold hover:bg-gray-200 transition-colors block text-center"
               >
                 {isRtl ? 'إغلاق' : 'Fermer'}
-              </button>
+              </a>
             </div>
           </div>
         </div>
