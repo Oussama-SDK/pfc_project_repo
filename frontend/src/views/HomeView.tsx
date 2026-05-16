@@ -294,6 +294,7 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('top');
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [mobileOpenDropdown, setMobileOpenDropdown] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -301,14 +302,14 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close dropdown when clicking outside
+  // Close dropdown when clicking outside (desktop only)
   useEffect(() => {
     const handleClickOutside = () => setOpenDropdown(null);
-    if (openDropdown) {
+    if (openDropdown && !mobileOpen) {
       document.addEventListener('click', handleClickOutside);
       return () => document.removeEventListener('click', handleClickOutside);
     }
-  }, [openDropdown]);
+  }, [openDropdown, mobileOpen]);
 
   const navLinks = [
     { href: '#top', label: t.nav.home, id: 'top' },
@@ -375,6 +376,10 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
     setOpenDropdown(openDropdown === itemId ? null : itemId);
   };
 
+  const handleMobileDropdownToggle = (itemId: string) => {
+    setMobileOpenDropdown(mobileOpenDropdown === itemId ? null : itemId);
+  };
+
   // Star icon for parcours button
   const StarIcon = () => (
     <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
@@ -418,7 +423,7 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
                 
                 {/* Dropdown menu */}
                 {openDropdown === item.label && (
-                  <div className="absolute top-full left-0 mt-1 w-64 bg-white rounded-xl shadow-xl border border-gray-100 py-2 animate-fade-in-down">
+                  <div className="absolute top-full left-0 mt-1 w-64 bg-white rounded-xl shadow-xl border border-gray-100 py-2 animate-fade-in-down z-50">
                     {item.dropdown.map((subItem, subIdx) => (
                       <a
                         key={subIdx}
@@ -479,7 +484,7 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
             >
               {language === 'fr' ? 'ع' : 'FR'}
             </button>
-            <button onClick={() => setMobileOpen(!mobileOpen)} className={`p-2 rounded-lg ${scrolled ? 'text-gray-700' : 'text-gray-700'}`}>
+            <button onClick={(e) => { e.stopPropagation(); setMobileOpen(!mobileOpen); }} className={`p-2 rounded-lg ${scrolled ? 'text-gray-700' : 'text-gray-700'}`}>
               {mobileOpen ? <CloseIcon /> : <MenuIcon />}
             </button>
           </div>
@@ -488,7 +493,7 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="lg:hidden mobile-menu-enter bg-white shadow-xl border-t border-gray-100">
+        <div className="lg:hidden mobile-menu-enter bg-white shadow-xl border-t border-gray-100" onClick={(e) => e.stopPropagation()}>
           <div className="px-4 py-4 space-y-1 max-h-[70vh] overflow-y-auto">
             {/* 9rayti-style mobile dropdowns */}
             {menuItems.map((item, idx) => (
@@ -496,21 +501,21 @@ function Navbar({ language, setLanguage, t, setShowLoginModal, setShowSignupModa
                 <div className="flex items-center justify-between py-2">
                   <span className="font-medium text-gray-900">{item.label}</span>
                   <button 
-                    onClick={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
+                    onClick={(e) => { e.stopPropagation(); handleMobileDropdownToggle(item.label); }}
                     className="p-1 text-gray-500"
                   >
-                    <svg className={`w-5 h-5 transition-transform ${openDropdown === item.label ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className={`w-5 h-5 transition-transform ${mobileOpenDropdown === item.label ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
                   </button>
                 </div>
-                {openDropdown === item.label && (
+                {mobileOpenDropdown === item.label && (
                   <div className="pl-4 space-y-1 mt-1">
                     {item.dropdown.map((subItem, subIdx) => (
                       <a
                         key={subIdx}
                         href={subItem.href}
-                        onClick={() => { setMobileOpen(false); setOpenDropdown(null); }}
+                        onClick={() => { setMobileOpen(false); setMobileOpenDropdown(null); }}
                         className="block py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50 rounded-lg px-2 transition-colors"
                       >
                         {subItem.label}
